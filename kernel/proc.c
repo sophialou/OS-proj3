@@ -174,34 +174,32 @@ exit(void)
   if(proc->isChild){
 
   } else {
-      // Close all open files.
-  for(fd = 0; fd < NOFILE; fd++){
-    if(proc->ofile[fd]){
-      fileclose(proc->ofile[fd]);
-      proc->ofile[fd] = 0;
+        // Close all open files.
+    for(fd = 0; fd < NOFILE; fd++){
+      if(proc->ofile[fd]){
+        fileclose(proc->ofile[fd]);
+        proc->ofile[fd] = 0;
+      }
     }
+
+     iput(proc->cwd);
+
+       proc->cwd = 0;
+
+      acquire(&ptable.lock);
+
+    // Parent might be sleeping in wait().
+    wakeup1(proc->parent);
+
+    // Pass abandoned children to init.
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->parent == proc){
+        p->parent = initproc;
+        if(p->state == ZOMBIE)
+          wakeup1(initproc);
+      }
   }
-
-   iput(proc->cwd);
-
-  }
-
- 
-  proc->cwd = 0;
-
-  acquire(&ptable.lock);
-
-  // Parent might be sleeping in wait().
-  wakeup1(proc->parent);
-
-  // Pass abandoned children to init.
-  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-    if(p->parent == proc){
-      p->parent = initproc;
-      if(p->state == ZOMBIE)
-        wakeup1(initproc);
-    }
-  }
+}
 
   // Jump into the scheduler, never to return.
   proc->state = ZOMBIE;
@@ -456,8 +454,8 @@ clone(void(*fcn)(void*), void* arg, void* stack)
   int i, pid;
   struct proc *nt;
 
-  char* stack_manipulate;
-  int* arg_manipulate;
+  char* stack_ptr;
+  uint bottom_stack;
 
 // TODO: if stack is one pgsize 
   if((uint)stack % PGSIZE) {  // not page aligned
@@ -482,32 +480,31 @@ clone(void(*fcn)(void*), void* arg, void* stack)
   *nt->tf = *proc->tf;
   nt->pgdir = proc->pgdir;   // share same address space 
 
-  stack_manipulate = (char*) stack;
-  arg_manipulate = (int*) arg;
 
-  // Push Old ebp onto the stack
-  stack_manipulate -= 4;
-  *(uint*)stack_manipulate = 0; 
-
-  // Push return addr onto the stack
-  stack_manipulate -=4;
-  *(uint*)stack_manipulate = 0xffffffff;
+  bottom_stack = *(uint*)stack + PGSIZE; 
+  stack_ptr = (char*) bottom_stack;
 
   // Push passed in arguments onto the stack 
-  stack_manipulate -=4;
-  *(uint*)stack_manipulate = *arg_manipulate;
+  stack_ptr -=4;
+  *(uint*)stack_ptr = *(uint*)arg;
+
+  // Push return addr onto the stack
+  stack_ptr -= 4;
+  *(uint*)stack_ptr = 0xffffffff;
+
+  // Push Old ebp onto the stack
+  stack_ptr -= 4;
+  *(uint*)stack_ptr = 0; 
 
 // Setting up the thread stack
-  nt->tf->esp = (uint) stack_manipulate; 
+  nt->tf->esp = (uint) stack_ptr; 
   nt->tf->ebp = nt->tf->esp;
 
   // new thread starts at passed in function fnc 
   nt->tf->eip = (uint) fcn;
 
-
-
   // Clear %eax so that fork returns 0 in the child.
-  nt->tf->eax = 0;
+  nt->tf->eax = 0;    
 
 // get a copy of the parent's file descriptors
   for(i = 0; i < NOFILE; i++)
@@ -523,7 +520,7 @@ clone(void(*fcn)(void*), void* arg, void* stack)
 
 int join(int pid){
   struct proc *p;
-  int pid;
+  int pid_wait;
 
   if (!proc->isChild){ // join called on main thread
     return -1;
@@ -543,7 +540,7 @@ int join(int pid){
         continue;
       if(p->state == ZOMBIE){
         // Found one.
-        pid = p->pid;
+        pid_wait = p->pid;
         kfree(p->kstack);
         p->kstack = 0;
         freevm(p->pgdir);
@@ -553,7 +550,7 @@ int join(int pid){
         p->name[0] = 0;
         p->killed = 0;
         release(&ptable.lock);
-        return pid;
+        return pid_wait;
       }
     }
 
