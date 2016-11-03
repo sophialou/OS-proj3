@@ -171,7 +171,10 @@ exit(void)
   if(proc == initproc)
     panic("init exiting");
 
-  // Close all open files.
+  if(proc->isChild){
+
+  } else {
+      // Close all open files.
   for(fd = 0; fd < NOFILE; fd++){
     if(proc->ofile[fd]){
       fileclose(proc->ofile[fd]);
@@ -179,7 +182,11 @@ exit(void)
     }
   }
 
-  iput(proc->cwd);
+   iput(proc->cwd);
+
+  }
+
+ 
   proc->cwd = 0;
 
   acquire(&ptable.lock);
@@ -443,34 +450,126 @@ procdump(void)
   }
 }
 
-
 int
 clone(void(*fcn)(void*), void* arg, void* stack)
 {
   int i, pid;
-  struct proc *np;
+  struct proc *nt;
+
+  char* stack_manipulate;
+  int* arg_manipulate;
+
+// TODO: if stack is one pgsize 
+  if((uint)stack % PGSIZE) {  // not page aligned
+    return -1;
+ }
 
   // Allocate process.
-  if((np = allocproc()) == 0)
+  if((nt = allocproc()) == 0)
     return -1;
+
+  // Set thread parent as main thread 
+  if (proc->isChild)
+  {
+     nt->parent = proc->parent;
+  } else {
+    nt->parent = proc;
+  }
 
   // Copy process state from p.
   
-  np->sz = proc->sz;
-  np->parent = proc;
-  *np->tf = *proc->tf;
+  nt->sz = proc->sz;
+  *nt->tf = *proc->tf;
+  nt->pgdir = proc->pgdir;   // share same address space 
+
+  stack_manipulate = (char*) stack;
+  arg_manipulate = (int*) arg;
+
+  // Push Old ebp onto the stack
+  stack_manipulate -= 4;
+  *(uint*)stack_manipulate = 0; 
+
+  // Push return addr onto the stack
+  stack_manipulate -=4;
+  *(uint*)stack_manipulate = 0xffffffff;
+
+  // Push passed in arguments onto the stack 
+  stack_manipulate -=4;
+  *(uint*)stack_manipulate = *arg_manipulate;
+
+// Setting up the thread stack
+  nt->tf->esp = (uint) stack_manipulate; 
+  nt->tf->ebp = nt->tf->esp;
+
+  // new thread starts at passed in function fnc 
+  nt->tf->eip = (uint) fcn;
+
+
 
   // Clear %eax so that fork returns 0 in the child.
-  np->tf->eax = 0;
+  nt->tf->eax = 0;
 
+// get a copy of the parent's file descriptors
   for(i = 0; i < NOFILE; i++)
     if(proc->ofile[i])
-      np->ofile[i] = filedup(proc->ofile[i]);
-  np->cwd = idup(proc->cwd);
+      nt->ofile[i] = filedup(proc->ofile[i]);
+  nt->cwd = idup(proc->cwd);
  
-  pid = np->pid;
-  np->state = RUNNABLE;
-  safestrcpy(np->name, proc->name, sizeof(proc->name));
+  pid = nt->pid;
+  nt->state = RUNNABLE;
+  safestrcpy(nt->name, proc->name, sizeof(proc->name));
   return pid;
+}
+
+int join(int pid){
+  struct proc *p;
+  int pid;
+
+  if (!proc->isChild){ // join called on main thread
+    return -1;
+  }
+
+  acquire(&ptable.lock);
+  for(;;){
+    // Scan through table looking for zombie children.
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+
+      if((p->pid == pid) && (proc->parent != p->parent)){
+        return -1;
+      }
+
+/////////// BELOW IS COPIED FROM WAIT /////////// 
+      if(p->parent != proc)
+        continue;
+      if(p->state == ZOMBIE){
+        // Found one.
+        pid = p->pid;
+        kfree(p->kstack);
+        p->kstack = 0;
+        freevm(p->pgdir);
+        p->state = UNUSED;
+        p->pid = 0;
+        p->parent = 0;
+        p->name[0] = 0;
+        p->killed = 0;
+        release(&ptable.lock);
+        return pid;
+      }
+    }
+
+    // No point waiting if we don't have any children.
+    if(proc->killed){
+      release(&ptable.lock);
+      return -1;
+    }
+
+    // Wait for children to exit.  (See wakeup1 call in proc_exit.)
+    sleep(proc, &ptable.lock);  //DOC: wait-sleep
+
+    /////////// ABOVE IS COPIED FROM WAIT /////////// 
+  }
+
+  return pid;  // the pid of the completed thread 
+
 }
 
