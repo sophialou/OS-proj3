@@ -144,7 +144,7 @@ fork(void)
   np->sz = proc->sz;
   np->parent = proc;
   *np->tf = *proc->tf;
-
+//   np -> isChild = 0 ;
   // Clear %eax so that fork returns 0 in the child.
   np->tf->eax = 0;
 
@@ -458,9 +458,9 @@ clone(void(*fcn)(void*), void* arg, void* stack)
   uint bottom_stack;
 
 // TODO: if stack is one pgsize 
-  if((uint)stack % PGSIZE) {  // not page aligned
-    return -1;
- }
+ // if((uint)stack % PGSIZE) {  // not page aligned
+  //  return -1;
+// }
 
   // Allocate process.
   if((nt = allocproc()) == 0)
@@ -475,7 +475,7 @@ clone(void(*fcn)(void*), void* arg, void* stack)
   }
 
   // Copy process state from p.
-  
+ // nt ->isChild = 1;  
   nt->sz = proc->sz;
   *nt->tf = *proc->tf;
   nt->pgdir = proc->pgdir;   // share same address space 
@@ -522,19 +522,21 @@ int join(int pid){
   struct proc *p;
   int pid_wait;
 
-  if (!proc->isChild){ // join called on main thread
-    return -1;
-  }
+ // if (p->isChild != 1 ){ // join called on main thread
+  //  return -1;
+ // }
 
   acquire(&ptable.lock);
   for(;;){
     // Scan through table looking for zombie children.
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
 
-      if((p->pid == pid) && (proc->parent != p->parent)){
+      if(p->pgdir != proc->pgdir){
         return -1;
       }
-
+	if (p->isChild != 1 ){ // join called on main thread
+   	 return -1;
+          }
 /////////// BELOW IS COPIED FROM WAIT /////////// 
       if(p->parent != proc)
         continue;
