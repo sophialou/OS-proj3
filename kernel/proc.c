@@ -460,7 +460,7 @@ clone(void(*fcn)(void*), void* arg, void* stack)
   uint bottom_stack;
 
 // TODO: if stack is one pgsize 
- // if((uint)stack % PGSIZE) {  // not page aligned
+//  if((uint)stack % PGSIZE) {  // not page aligned
   //  return -1;
 // }
 
@@ -527,7 +527,7 @@ clone(void(*fcn)(void*), void* arg, void* stack)
 
 int join(int pid){
   struct proc *p;
- // int pid_wait;
+ // int pid_r = proc->pgdir;wait;
   uint pa;
 // uint stack_ptr;
  // if (p->isChild != 1 ){ // join called on main thread
