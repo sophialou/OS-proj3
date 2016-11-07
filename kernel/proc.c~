@@ -479,10 +479,7 @@ clone(void(*fcn)(void*), void* arg, void* stack)
   }
 
   // Copy process state from p.
-   nt ->isChild = 1;  
-   nt->sz = proc->sz;
-   *nt->tf = *proc->tf;
-   nt->pgdir = proc->pgdir;   // share same address space
+   
 
 
   bottom_stack = (*(uint*)stack) + PGSIZE; 
@@ -502,14 +499,17 @@ clone(void(*fcn)(void*), void* arg, void* stack)
   *(uint*)stack_ptr = 0; 
    
 
-  
+   nt ->isChild = 1;  
+   nt->sz = proc->sz;
+   *nt->tf = *proc->tf;
+   nt->pgdir = proc->pgdir;   // share same address space
 
 // Setting up the thread stack
   nt->tf->esp = (uint) stack_ptr; 
   nt->tf->ebp = nt->tf->esp;
    nt->stack = stack;
   // new thread starts at passed in function fnc 
-  nt->tf->eip = (uint) fcn;
+  nt->tf->eip = (uint)fcn;
 
   // Clear %eax so that fork returns 0 in the child.
   nt->tf->eax = 0;    
