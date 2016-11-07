@@ -171,7 +171,7 @@ exit(void)
   if(proc == initproc)
     panic("init exiting");
 
-  cprintf("Exiting %d",proc->pid);
+  cprintf("Exiting %d \n",proc->pid);
     
         // Close all open files.
    for(fd = 0; fd < NOFILE; fd++){
@@ -220,7 +220,7 @@ wait(void)
     // Scan through table looking for zombie children.
     havekids = 0;
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->parent != proc)
+      if((p->parent != proc) || (p->isChild == 1))
         continue;
       havekids = 1;
 
@@ -459,12 +459,8 @@ clone(void(*fcn)(void*), void* arg, void* stack)
   struct proc *nt;
 
   char* stack_ptr;
-  uint bottom_stack;
+ // uint bottom_stack;
 
-// TODO: if stack is one pgsize 
- // if((uint)stack % PGSIZE) {  // not page aligned
-  //  return -1;
-// }
 
   // Allocate process.
 
@@ -487,20 +483,46 @@ clone(void(*fcn)(void*), void* arg, void* stack)
   nt->pgdir = proc->pgdir;   // share same address space 
 
 
-  bottom_stack = *(uint*)stack + PGSIZE; 
-  stack_ptr = (char*) bottom_stack;
+  /////
+
+  // char* sp;
+
+  // kstack is char*
+
+  // sp = p->kstack + KSTACKSIZE;
+  
+  // // Leave room for trap frame.
+  // sp -= sizeof *p->tf;
+  // p->tf = (struct trapframe*)sp;
+  
+  // // Set up new context to start executing at forkret,
+  // // which returns to trapret.
+  // sp -= 4;
+  // *(uint*)sp = (uint)trapret;
+
+  // sp -= sizeof *p->context;
+  // p->context = (struct context*)sp;
+  // memset(p->context, 0, sizeof *p->context);
+
+  /////////
+
+
+ // cprintf("testing %d \n", stack);
+ // bottom_stack = stack + PGSIZE; 
+
+  stack_ptr = stack + PGSIZE;
 
   // Push passed in arguments onto the stack 
-  stack_ptr -=4;
-  *(uint*)stack_ptr = *(uint*)arg;
+  stack_ptr -= 4;
+  *(uint*)stack_ptr = (uint)arg;
 
   // Push return addr onto the stack
   stack_ptr -= 4;
-  *(uint*)stack_ptr = 0xffffffff;
+  *(uint*)stack_ptr = 0xFFFFFFFF;
 
   // Push Old ebp onto the stack
-  stack_ptr -= 4;
-  *(uint*)stack_ptr = 0; 
+ // stack_ptr -= 4;
+ // *(uint*)stack_ptr = 0; 
 
 // Setting up the thread stack
   nt->tf->esp = (uint) stack_ptr; 
@@ -529,6 +551,8 @@ clone(void(*fcn)(void*), void* arg, void* stack)
 
 int join(int pid){
   struct proc *p;
+ // struct proc *found;
+//  int childFound = 0;
 
 // find the proc with pid
 acquire(&ptable.lock);
@@ -537,11 +561,11 @@ acquire(&ptable.lock);
         continue;
       break;
     }
-
   
+  cprintf("found pid is %d \n", p->pid);
 
-  if ((p->isChild == 0) || (p->pgdir != proc->pgdir)){
-          cprintf("isChild");     // join called on main thread
+  if ((p->isChild == 0) || (p->parent == proc->parent) || (p->pgdir != proc-> pgdir)){
+          cprintf("isChild");     // join called on main thread  or not sharing memory space
           release(&ptable.lock);
            return -1;
       }
@@ -573,8 +597,7 @@ acquire(&ptable.lock);
                 // Wait for children to exit.  (See wakeup1 call in proc_exit.)
     sleep(proc, &ptable.lock);  //DOC: wait-sleep
   }
-  release(&ptable.lock);
-  return pid;  // the pid of the completed thread 
-
+ // release(&ptable.lock);
+  //return pid;  // the pid of the completed thread 
 }
 

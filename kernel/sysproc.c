@@ -96,15 +96,15 @@ sys_clone(void)
 {
 
 void *fcn, *arg, *stack;
-if(argptr(0,(void *)&fcn ,sizeof(void *) ) < 0 || argptr(1, (void *)&arg, sizeof(void *)) < 0 || argptr(2, (void *)&stack , sizeof(void *)) < 0)
+if(argptr(0,(void *)&fcn ,sizeof(void *) ) < 0 || argptr(1, (void *)&arg, sizeof(void *)) < 0 || argptr(2, (void *)&stack , PGSIZE) < 0)
     return -1;
 
 
 if ((uint)stack % PGSIZE !=0)
  return -1;
 
-if ((uint)proc->sz -  (uint)stack == PGSIZE/2 )
- return -1;
+//if ((uint)proc->sz -  (uint)stack == PGSIZE/2 )
+ //return -1;
 
 
 return clone(fcn, arg, stack) ;
