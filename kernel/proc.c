@@ -597,4 +597,12 @@ acquire(&ptable.lock);
 //  // release(&ptable.lock);
 // }
 
+void waitcv(void){
+
+}
+
+void signalcv(void){
+
+}
+
 

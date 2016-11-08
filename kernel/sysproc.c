@@ -94,25 +94,17 @@ sys_uptime(void)
 int
 sys_clone(void)
 {
-
 void *fcn, *arg, *stack;
 if(argptr(0,(void *)&fcn ,sizeof(void *) ) < 0 || argptr(1, (void *)&arg, sizeof(void *)) < 0 || argptr(2, (void *)&stack , PGSIZE) < 0)
     return -1;
 
-
 if ((uint)stack % PGSIZE !=0)
  return -1;
-
-//if ((uint)proc->sz -  (uint)stack == PGSIZE/2 )
- //return -1;
-
 
 return clone(fcn, arg, stack) ;
 
 
 }
-
-
 
 int
 sys_join(void)
@@ -122,4 +114,18 @@ int pid;
  	 return -1 ;
 
 return join(pid);
+}
+
+int
+sys_waitcv(void)
+{
+  waitcv();
+  return 0;
+}
+
+int
+sys_signalcv(void)
+{
+  signalcv();
+  return 0;
 }

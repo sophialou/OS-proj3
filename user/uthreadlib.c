@@ -76,7 +76,8 @@ lock_init(lock_t* lock){
 //           CONDITION VARIABLES
 //-------------------------------------------------
 
-// Release the lock pointed to by lock and put the caller to sleep.  Assumes that lock is held when this is called.  When signaled, the thread awakens and reacquires the lock.
+// Release the lock pointed to by lock and put the caller to sleep.
+// Assumes that lock is held when this is called.  When signaled, the thread awakens and reacquires the lock.
 void
 cv_wait(cond_t* conditionVariable, lock_t* lock){
 
