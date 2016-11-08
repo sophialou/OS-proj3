@@ -27,6 +27,7 @@ struct cpu {
 
 extern struct cpu cpus[NCPU];
 extern int ncpu;
+extern pte_t* walkpgdir(pde_t *pgdir, const void *va, int create);
 
 // Per-CPU variables, holding pointers to the
 // current cpu and to the current process.

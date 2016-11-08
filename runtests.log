@@ -7,7 +7,7 @@ Trying to clean project using make clean
 make clean
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG kernel/proc.c -MF kernel/proc.d -MT kernel/proc.d -MT kernel/proc.o
-rm -rf kernel/bio.o kernel/console.o kernel/exec.o kernel/file.o kernel/fs.o kernel/ide.o kernel/ioapic.o kernel/kalloc.o kernel/kbd.o kernel/lapic.o kernel/main.o kernel/mp.o kernel/picirq.o kernel/pipe.o kernel/proc.o kernel/spinlock.o kernel/string.o kernel/swtch.o kernel/syscall.o kernel/sysfile.o kernel/sysproc.o kernel/timer.o kernel/trapasm.o kernel/trap.o kernel/uart.o kernel/vectors.o kernel/vm.o kernel/bootmain.o kernel/bootasm.o kernel/multiboot.o kernel/data.o kernel/bootother.o kernel/initcode.o kernel/bio.d kernel/console.d kernel/exec.d kernel/file.d kernel/fs.d kernel/ide.d kernel/ioapic.d kernel/kalloc.d kernel/kbd.d kernel/lapic.d kernel/main.d kernel/mp.d kernel/picirq.d kernel/pipe.d kernel/proc.d kernel/spinlock.d kernel/string.d kernel/swtch.d kernel/syscall.d kernel/sysfile.d kernel/sysproc.d kernel/timer.d kernel/trapasm.d kernel/trap.d kernel/uart.d kernel/vectors.d kernel/vm.d kernel/bootmain.d kernel/bootasm.d kernel/multiboot.d kernel/data.d kernel/bootother.d kernel/initcode.d kernel/vectors.S kernel/bootblock kernel/bootblock.out kernel/bootother.out kernel/initcode.out kernel/kernel bootother initcode xv6.img user/bin user/cat user/echo user/forktest user/grep user/init user/kill user/ln user/ls user/mkdir user/rm user/sh user/stressfs user/tester user/usertests user/wc user/zombie user/pt user/cat.o user/echo.o user/forktest.o user/grep.o user/init.o user/kill.o user/ln.o user/ls.o user/mkdir.o user/rm.o user/sh.o user/stressfs.o user/tester.o user/usertests.o user/wc.o user/zombie.o user/pt.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/cat.d user/echo.d user/forktest.d user/grep.d user/init.d user/kill.d user/ln.d user/ls.d user/mkdir.d user/rm.d user/sh.d user/stressfs.d user/tester.d user/usertests.d user/wc.d user/zombie.d user/pt.d user/ulib.d user/usys.d user/printf.d user/umalloc.d tools/mkfs tools/mkfs.o tools/mkfs.d fs fs.img .gdbinit .bochsrc dist
+rm -rf kernel/bio.o kernel/console.o kernel/exec.o kernel/file.o kernel/fs.o kernel/ide.o kernel/ioapic.o kernel/kalloc.o kernel/kbd.o kernel/lapic.o kernel/main.o kernel/mp.o kernel/picirq.o kernel/pipe.o kernel/proc.o kernel/spinlock.o kernel/string.o kernel/swtch.o kernel/syscall.o kernel/sysfile.o kernel/sysproc.o kernel/timer.o kernel/trapasm.o kernel/trap.o kernel/uart.o kernel/vectors.o kernel/vm.o kernel/bootmain.o kernel/bootasm.o kernel/multiboot.o kernel/data.o kernel/bootother.o kernel/initcode.o kernel/bio.d kernel/console.d kernel/exec.d kernel/file.d kernel/fs.d kernel/ide.d kernel/ioapic.d kernel/kalloc.d kernel/kbd.d kernel/lapic.d kernel/main.d kernel/mp.d kernel/picirq.d kernel/pipe.d kernel/proc.d kernel/spinlock.d kernel/string.d kernel/swtch.d kernel/syscall.d kernel/sysfile.d kernel/sysproc.d kernel/timer.d kernel/trapasm.d kernel/trap.d kernel/uart.d kernel/vectors.d kernel/vm.d kernel/bootmain.d kernel/bootasm.d kernel/multiboot.d kernel/data.d kernel/bootother.d kernel/initcode.d kernel/vectors.S kernel/bootblock kernel/bootblock.out kernel/bootother.out kernel/initcode.out kernel/kernel bootother initcode xv6.img user/bin user/cat user/echo user/forktest user/grep user/init user/kill user/ln user/ls user/mkdir user/rm user/sh user/stressfs user/tester user/usertests user/wc user/zombie user/pt user/cat.o user/echo.o user/forktest.o user/grep.o user/init.o user/kill.o user/ln.o user/ls.o user/mkdir.o user/rm.o user/sh.o user/stressfs.o user/tester.o user/usertests.o user/wc.o user/zombie.o user/pt.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o user/cat.d user/echo.d user/forktest.d user/grep.d user/init.d user/kill.d user/ln.d user/ls.d user/mkdir.d user/rm.d user/sh.d user/stressfs.d user/tester.d user/usertests.d user/wc.d user/zombie.d user/pt.d user/ulib.d user/usys.d user/printf.d user/umalloc.d user/uthreadlib.d tools/mkfs tools/mkfs.o tools/mkfs.d fs fs.img .gdbinit .bochsrc dist
 Trying to build project using make
 make
 Makefile:149: kernel/bio.d: No such file or directory
@@ -64,9 +64,12 @@ Makefile:149: user/ulib.d: No such file or directory
 Makefile:149: user/usys.d: No such file or directory
 Makefile:149: user/printf.d: No such file or directory
 Makefile:149: user/umalloc.d: No such file or directory
+Makefile:149: user/uthreadlib.d: No such file or directory
 Makefile:149: tools/mkfs.d: No such file or directory
 gcc  -iquote include -Wall -Werror -ggdb  \
 	  -M -MG tools/mkfs.c -MF tools/mkfs.d -MT tools/mkfs.d -MT tools/mkfs.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/uthreadlib.c -MF user/uthreadlib.d -MT user/uthreadlib.d -MT user/uthreadlib.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG user/umalloc.c -MF user/umalloc.d -MT user/umalloc.d -MT user/umalloc.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -231,15 +234,15 @@ ld  -m    elf_i386 -nostdlib --omagic \
 dd if=/dev/zero of=xv6.img count=10000
 10000+0 records in
 10000+0 records out
-5120000 bytes (5.1 MB) copied, 0.0126693 s, 404 MB/s
+5120000 bytes (5.1 MB) copied, 0.0126108 s, 406 MB/s
 dd if=kernel/bootblock of=xv6.img conv=notrunc
 1+0 records in
 1+0 records out
-512 bytes (512 B) copied, 0.000236584 s, 2.2 MB/s
+512 bytes (512 B) copied, 8.192e-05 s, 6.2 MB/s
 dd if=kernel/kernel of=xv6.img seek=1 conv=notrunc
 255+1 records in
 255+1 records out
-130626 bytes (131 kB) copied, 0.000300239 s, 435 MB/s
+130570 bytes (131 kB) copied, 0.000285669 s, 457 MB/s
 gcc -c  -iquote include -Wall -Werror -ggdb  -o tools/mkfs.o tools/mkfs.c
 gcc  tools/mkfs.o -o tools/mkfs
 mkdir -p fs
@@ -249,56 +252,57 @@ gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-
 gcc  -I include -nostdinc -ggdb  -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c user/usys.S -o user/usys.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/printf.o user/printf.c
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/umalloc.o user/umalloc.c
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/uthreadlib.o user/uthreadlib.c
 mkdir -p user/bin
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/cat user/cat.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/cat user/cat.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/cat fs/cat
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/echo.o user/echo.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/echo user/echo.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/echo user/echo.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/echo fs/echo
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/forktest.o user/forktest.c
 ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/forktest user/forktest.o user/ulib.o user/usys.o
 cp user/bin/forktest fs/forktest
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/grep.o user/grep.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/grep user/grep.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/grep user/grep.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/grep fs/grep
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/init.o user/init.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/init user/init.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/init user/init.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/init fs/init
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/kill.o user/kill.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/kill user/kill.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/kill user/kill.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/kill fs/kill
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/ln.o user/ln.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/ln user/ln.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/ln user/ln.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/ln fs/ln
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/ls.o user/ls.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/ls user/ls.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/ls user/ls.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/ls fs/ls
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/mkdir.o user/mkdir.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/mkdir user/mkdir.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/mkdir user/mkdir.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/mkdir fs/mkdir
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/rm.o user/rm.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/rm user/rm.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/rm user/rm.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/rm fs/rm
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/sh.o user/sh.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/sh user/sh.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/sh user/sh.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/sh fs/sh
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/stressfs.o user/stressfs.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/stressfs user/stressfs.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/stressfs user/stressfs.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/stressfs fs/stressfs
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/tester fs/tester
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/usertests.o user/usertests.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/usertests user/usertests.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/usertests user/usertests.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/usertests fs/usertests
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/wc.o user/wc.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/wc user/wc.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/wc user/wc.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/wc fs/wc
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/zombie.o user/zombie.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/zombie user/zombie.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/zombie user/zombie.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/zombie fs/zombie
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/pt.o user/pt.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/pt user/pt.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/pt user/pt.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 ld: warning: cannot find entry symbol main; defaulting to 0000000000000000
 cp user/bin/pt fs/pt
 ./tools/mkfs fs.img fs
@@ -321,7 +325,7 @@ wc
 forktest
 kill
 ls
-balloc: first 440 blocks have been allocated
+balloc: first 470 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/stressfs user/bin/echo user/bin/grep user/bin/tester user/bin/kill user/bin/cat user/bin/mkdir user/bin/init user/bin/rm user/bin/ls user/bin/ln user/bin/usertests user/bin/sh user/bin/wc user/bin/zombie user/bin/pt
 
@@ -336,13 +340,13 @@ Finished running test build
 Start running test clone
 Description: Call clone and spin until child thread has changed global variable.  Verifies that address space is shared.
 
-Running xv6 user progam /home/psx2851/Downloads/provided-basic-tests/tests/ctests/proj3/clone.c
+Running xv6 user progam /home/sll411/provided-basic-tests/tests/ctests/proj3/clone.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/tester fs/tester
 ./tools/mkfs fs.img fs
 used 29 (bit 1 ninode 26) free 29 total 1024
@@ -364,7 +368,7 @@ wc
 forktest
 kill
 ls
-balloc: first 442 blocks have been allocated
+balloc: first 472 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -383,8 +387,10 @@ cpu0: starting
 init: starting sh
 $ tester
 tester
+Exiting 4 
 global: 5
 TEST PASSED
+Exiting 3 
 
 
 test clone PASSED
@@ -397,13 +403,13 @@ Finished running test clone
 Start running test badclone
 Description: When passing a non page-aligned stack to clone, clone should return -1.
 
-Running xv6 user progam /home/psx2851/Downloads/provided-basic-tests/tests/ctests/proj3/badclone.c
+Running xv6 user progam /home/sll411/provided-basic-tests/tests/ctests/proj3/badclone.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/tester fs/tester
 ./tools/mkfs fs.img fs
 used 29 (bit 1 ninode 26) free 29 total 1024
@@ -425,7 +431,7 @@ wc
 forktest
 kill
 ls
-balloc: first 443 blocks have been allocated
+balloc: first 472 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -444,8 +450,9 @@ cpu0: starting
 init: starting sh
 $ tester
 tester
-8000 8004 8004TEST PASSED
-
+TEST PASSED
+Exiting 3 
+$ 
 
 test badclone PASSED
 Description: When passing a non page-aligned stack to clone, clone should return -1.
@@ -457,13 +464,13 @@ Finished running test badclone
 Start running test join
 Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
 
-Running xv6 user progam /home/psx2851/Downloads/provided-basic-tests/tests/ctests/proj3/join.c
+Running xv6 user progam /home/sll411/provided-basic-tests/tests/ctests/proj3/join.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
 cp user/bin/tester fs/tester
 ./tools/mkfs fs.img fs
 used 29 (bit 1 ninode 26) free 29 total 1024
@@ -485,7 +492,7 @@ wc
 forktest
 kill
 ls
-balloc: first 443 blocks have been allocated
+balloc: first 472 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -504,15 +511,151 @@ cpu0: starting
 init: starting sh
 $ tester
 tester
-pid 4 tester: trap 14 err 5 on cpu 0 eip 0x293 addr 0xffffffff--kill proc
-4cpu1: panic: kfree
- 1029de 104882 105f68 104f97 106205 10
+found pid is 4 
+Exiting 4 
+found pid is 5 
+Exiting 5 
+found pid is 6 
+Exiting 6 
+found pid is 7 
+Exiting 7 
+found pid is 8 
+Exiting 8 
+found pid is 9 
+Exiting 9 
+found pid is 10 
+Exiting 10 
+found pid is 11 
+Exiting 11 
+found pid is 12 
+Exiting 12 
+found pid is 13 
+Exiting 13 
+found pid is 14 
+Exiting 14 
+found pid is 15 
+Exiting 15 
+found pid is 16 
+Exiting 16 
+found pid is 17 
+Exiting 17 
+found pid is 18 
+Exiting 18 
+found pid is 19 
+Exiting 19 
+found pid is 20 
+Exiting 20 
+found pid is 21 
+Exiting 21 
+found pid is 22 
+Exiting 22 
+found pid is 23 
+Exiting 23 
+found pid is 24 
+Exiting 24 
+found pid is 25 
+Exiting 25 
+found pid is 26 
+Exiting 26 
+found pid is 27 
+Exiting 27 
+found pid is 28 
+Exiting 28 
+found pid is 29 
+Exiting 29 
+found pid is 30 
+Exiting 30 
+found pid is 31 
+Exiting 31 
+found pid is 32 
+Exiting 32 
+found pid is 33 
+Exiting 33 
+found pid is 34 
+Exiting 34 
+found pid is 35 
+Exiting 35 
+found pid is 36 
+Exiting 36 
+found pid is 37 
+Exiting 37 
+found pid is 38 
+Exiting 38 
+found pid is 39 
+Exiting 39 
+found pid is 40 
+Exiting 40 
+found pid is 41 
+Exiting 41 
+found pid is 42 
+Exiting 42 
+found pid is 43 
+Exiting 43 
+found pid is 44 
+Exiting 44 
+found pid is 45 
+Exiting 45 
+found pid is 46 
+Exiting 46 
+found pid is 47 
+Exiting 47 
+found pid is 48 
+Exiting 48 
+found pid is 49 
+Exiting 49 
+found pid is 50 
+Exiting 50 
+found pid is 51 
+Exiting 51 
+found pid is 52 
+Exiting 52 
+found pid is 53 
+Exiting 53 
+found pid is 54 
+Exiting 54 
+found pid is 55 
+Exiting 55 
+found pid is 56 
+Exiting 56 
+found pid is 57 
+Exiting 57 
+found pid is 58 
+Exiting 58 
+found pid is 59 
+Exiting 59 
+found pid is 60 
+Exiting 60 
+found pid is 61 
+Exiting 61 
+TEST PASSED
+Exiting 3 
 
-test join FAILED
+
+test join PASSED
 Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
- xv6 kernel panic
 
 Finished running test join
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Skipped 0 tests.
-To keep testing after failing a test, use flag '-c' or '--continue'
+
+
+**********************************************************************
+**********************************************************************
+**                            SUMMARY                               **
+**********************************************************************
+**********************************************************************
+
+test build PASSED (5 of 5)
+build xv6 using make
+
+test clone PASSED
+Description: Call clone and spin until child thread has changed global variable.  Verifies that address space is shared.
+
+test badclone PASSED
+Description: When passing a non page-aligned stack to clone, clone should return -1.
+
+test join PASSED
+Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
+
+Passed 4 of 4 tests.
+Overall 4 of 4
+Points 5 of 5

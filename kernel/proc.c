@@ -109,13 +109,19 @@ growproc(int n)
   uint sz;
   
   sz = proc->sz;
+  acquire(&ptable.lock);
   if(n > 0){
-    if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0)
+    if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0){
+      release(&ptable.lock);
       return -1;
+    }
   } else if(n < 0){
-    if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0)
+    if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0){
+      release(&ptable.lock);
       return -1;
+    }
   }
+  release(&ptable.lock);
   proc->sz = sz;
   switchuvm(proc);
   return 0;
@@ -483,33 +489,6 @@ clone(void(*fcn)(void*), void* arg, void* stack)
   nt->pgdir = proc->pgdir;   // share same address space 
 
 
-  /////
-
-  // char* sp;
-
-  // kstack is char*
-
-  // sp = p->kstack + KSTACKSIZE;
-  
-  // // Leave room for trap frame.
-  // sp -= sizeof *p->tf;
-  // p->tf = (struct trapframe*)sp;
-  
-  // // Set up new context to start executing at forkret,
-  // // which returns to trapret.
-  // sp -= 4;
-  // *(uint*)sp = (uint)trapret;
-
-  // sp -= sizeof *p->context;
-  // p->context = (struct context*)sp;
-  // memset(p->context, 0, sizeof *p->context);
-
-  /////////
-
-
- // cprintf("testing %d \n", stack);
- // bottom_stack = stack + PGSIZE; 
-
   stack_ptr = stack + PGSIZE;
 
   // Push passed in arguments onto the stack 
@@ -551,6 +530,8 @@ clone(void(*fcn)(void*), void* arg, void* stack)
 
 int join(int pid){
   struct proc *p;
+   // uint pa;
+   // pte_t* stack;
  // struct proc *found;
 //  int childFound = 0;
 
@@ -570,7 +551,6 @@ acquire(&ptable.lock);
            return -1;
       }
 
-  
   for(;;){
     // Scan through table looking for zombie children.
 
@@ -583,7 +563,12 @@ acquire(&ptable.lock);
         p->parent = 0;
         p->name[0] = 0;
         p->killed = 0;
+        // stack = walkpgdir(p->pgdir, (char*)p->stack, 0);  // returns addr PTE in page table pgdir corrresponding to va
+        // if(stack && (*stack & PTE_P) != 0)
+        //     pa = PTE_ADDR(*stack);
+        //  kfree((char*)pa);
         p->stack = 0;
+
         release(&ptable.lock);
         return pid;
       }
@@ -597,7 +582,19 @@ acquire(&ptable.lock);
                 // Wait for children to exit.  (See wakeup1 call in proc_exit.)
     sleep(proc, &ptable.lock);  //DOC: wait-sleep
   }
- // release(&ptable.lock);
-  //return pid;  // the pid of the completed thread 
 }
+
+// void freeStack(pde_t* pgdir, void* va){
+//   uint pa;
+//   //uint a = PGSIZE;
+//   pte_t* stack;
+
+//   //acquire(&ptable.lock);
+//   stack = walkpgdir(pgdir, (char*)va, 0);  // returns addr PTE in page table pgdir corrresponding to va
+//   if(stack && (*stack & PTE_P) != 0)
+//       pa = PTE_ADDR(*stack);
+//    kfree((char*)pa);
+//  // release(&ptable.lock);
+// }
+
 
