@@ -43,7 +43,7 @@ void* malloc(uint);
 void free(void*);
 int atoi(const char*);
 
-// threads
+// threads (uthreadlib.c)
 int thread_create(void (*start_routine)(void*), void* arg);
 int thread_join(int pid);
 void lock_acquire(lock_t* lock);

@@ -6,7 +6,6 @@
 
 #define PGSIZE (4096)
 
-//void *stackTable[NPROC];
 stackTable* stack_t[NPROC];
 int numThreads=0;
 
@@ -63,7 +62,7 @@ lock_acquire(lock_t* lock){
 // Release the lock pointed to by lock.
 void
 lock_release(lock_t* lock){
-	lock->islocked = 0;
+	xchg(&lock->islocked, 0);
 }
 
 // Initialize the lock pointed to by lock.
@@ -80,6 +79,10 @@ lock_init(lock_t* lock){
 // Assumes that lock is held when this is called.  When signaled, the thread awakens and reacquires the lock.
 void
 cv_wait(cond_t* conditionVariable, lock_t* lock){
+
+	//Wait must release the lock and put the thread to sleep, atomically
+
+	// When the thread wakes up, re-acquires the lock before returning 
 
 }
 

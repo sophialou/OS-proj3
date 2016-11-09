@@ -177,16 +177,23 @@ exit(void)
   if(proc == initproc)
     panic("init exiting");
 
-  cprintf("Exiting %d \n",proc->pid);
-    
-        // Close all open files.
+//  cprintf("Exiting %d \n",proc->pid);
+
+  if (proc->isChild == 0){  // Found a main thread   > kill children 
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if (p->parent == proc){
+        p->state = ZOMBIE;
+      }
+    }
+  }
+
+   // Close all open files.
    for(fd = 0; fd < NOFILE; fd++){
       if(proc->ofile[fd]){
         fileclose(proc->ofile[fd]);
         proc->ofile[fd] = 0;
      }
    }
-
 
      iput(proc->cwd);
 
@@ -226,7 +233,7 @@ wait(void)
     // Scan through table looking for zombie children.
     havekids = 0;
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if((p->parent != proc) || (p->isChild == 1))
+      if((p->parent != proc) || (p->isChild == 1))  // (p->pgdir != proc->pgdir) ? 
         continue;
       havekids = 1;
 
@@ -465,8 +472,6 @@ clone(void(*fcn)(void*), void* arg, void* stack)
   struct proc *nt;
 
   char* stack_ptr;
- // uint bottom_stack;
-
 
   // Allocate process.
 
@@ -530,10 +535,6 @@ clone(void(*fcn)(void*), void* arg, void* stack)
 
 int join(int pid){
   struct proc *p;
-   // uint pa;
-   // pte_t* stack;
- // struct proc *found;
-//  int childFound = 0;
 
 // find the proc with pid
 acquire(&ptable.lock);
@@ -543,7 +544,7 @@ acquire(&ptable.lock);
       break;
     }
   
-  cprintf("found pid is %d \n", p->pid);
+  //cprintf("found pid is %d \n", p->pid);
 
   if ((p->isChild == 0) || (p->parent == proc->parent) || (p->pgdir != proc-> pgdir)){
           cprintf("isChild");     // join called on main thread  or not sharing memory space
@@ -563,10 +564,6 @@ acquire(&ptable.lock);
         p->parent = 0;
         p->name[0] = 0;
         p->killed = 0;
-        // stack = walkpgdir(p->pgdir, (char*)p->stack, 0);  // returns addr PTE in page table pgdir corrresponding to va
-        // if(stack && (*stack & PTE_P) != 0)
-        //     pa = PTE_ADDR(*stack);
-        //  kfree((char*)pa);
         p->stack = 0;
 
         release(&ptable.lock);
@@ -583,19 +580,6 @@ acquire(&ptable.lock);
     sleep(proc, &ptable.lock);  //DOC: wait-sleep
   }
 }
-
-// void freeStack(pde_t* pgdir, void* va){
-//   uint pa;
-//   //uint a = PGSIZE;
-//   pte_t* stack;
-
-//   //acquire(&ptable.lock);
-//   stack = walkpgdir(pgdir, (char*)va, 0);  // returns addr PTE in page table pgdir corrresponding to va
-//   if(stack && (*stack & PTE_P) != 0)
-//       pa = PTE_ADDR(*stack);
-//    kfree((char*)pa);
-//  // release(&ptable.lock);
-// }
 
 void waitcv(void){
 
