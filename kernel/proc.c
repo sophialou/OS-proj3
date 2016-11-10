@@ -178,14 +178,14 @@ exit(void)
   if(proc == initproc)
     panic("init exiting");
 
-//  cprintf("Exiting %d \n",proc->pid);
+ // cprintf("Exiting %d IsChild %d \n",proc->pid, proc->isChild);
 
   if (proc->isChild == 0){  // Found a main thread   > kill children 
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
       if (p->parent == proc && p->isChild == 1){
-        p->state = ZOMBIE;
-        int child_pid = join(p->pid);
-        kill(child_pid);
+       // cprintf("Killing child %d \n",p->pid);
+        kill(p->pid);
+        join(p->pid);
       }
     }
   }
@@ -215,7 +215,6 @@ exit(void)
           wakeup1(initproc);
       }
   }
-
 
   // Jump into the scheduler, never to return.
   proc->state = ZOMBIE;
