@@ -79,15 +79,11 @@ lock_init(lock_t* lock){
 // Assumes that lock is held when this is called.  When signaled, the thread awakens and reacquires the lock.
 void
 cv_wait(cond_t* conditionVariable, lock_t* lock){
-
-	//Wait must release the lock and put the thread to sleep, atomically
-
-	// When the thread wakes up, re-acquires the lock before returning 
-
+	waitcv(conditionVariable, lock);
 }
 
 // Wake the threads that are waiting on conditionVariable.
 void
 cv_signal(cond_t* conditionVariable){
-
+	signalcv(conditionVariable);
 }

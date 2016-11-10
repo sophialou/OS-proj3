@@ -119,13 +119,30 @@ return join(pid);
 int
 sys_waitcv(void)
 {
-  waitcv();
+  void *conditionVariable, *lock;
+
+  if((argptr(0, (void *)&conditionVariable, sizeof(void *)) < 0) || (argptr(1, (void *)&lock, sizeof(void *)) < 0))
+    return -1;
+
+  //TODO:
+  //Cast conditionVariable as cond_t and lock as lock_t
+  // THIS IS PROBABLY VERY WRONG :(
+  waitcv((cond_t *)conditionVariable, (lock_t *)lock);
   return 0;
+
 }
 
 int
 sys_signalcv(void)
 {
-  signalcv();
+  void *conditionVariable;
+  
+  if(argptr(0, (void *)&conditionVariable, sizeof(void *)) < 0)
+    return -1;
+
+  //TODO:
+  //Cast conditionVariable as cond_t
+  // THIS IS PROBABLY VERY WRONG :(
+  signalcv((cond_t *)conditionVariable);
   return 0;
 }

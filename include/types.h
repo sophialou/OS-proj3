@@ -18,7 +18,7 @@ typedef struct __lock_t{
 }lock_t;
 
 typedef struct __cond_t{
-	struct proc *queue;
+	void* chan;
 }cond_t;
 
 #ifndef NULL

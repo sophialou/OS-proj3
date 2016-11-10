@@ -5,6 +5,12 @@ build xv6 using make
 
 Trying to clean project using make clean
 make clean
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/uthreadlib.c -MF user/uthreadlib.d -MT user/uthreadlib.d -MT user/uthreadlib.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/sysproc.c -MF kernel/sysproc.d -MT kernel/sysproc.d -MT kernel/sysproc.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/proc.c -MF kernel/proc.d -MT kernel/proc.d -MT kernel/proc.o
 rm -rf kernel/bio.o kernel/console.o kernel/exec.o kernel/file.o kernel/fs.o kernel/ide.o kernel/ioapic.o kernel/kalloc.o kernel/kbd.o kernel/lapic.o kernel/main.o kernel/mp.o kernel/picirq.o kernel/pipe.o kernel/proc.o kernel/spinlock.o kernel/string.o kernel/swtch.o kernel/syscall.o kernel/sysfile.o kernel/sysproc.o kernel/timer.o kernel/trapasm.o kernel/trap.o kernel/uart.o kernel/vectors.o kernel/vm.o kernel/bootmain.o kernel/bootasm.o kernel/multiboot.o kernel/data.o kernel/bootother.o kernel/initcode.o kernel/bio.d kernel/console.d kernel/exec.d kernel/file.d kernel/fs.d kernel/ide.d kernel/ioapic.d kernel/kalloc.d kernel/kbd.d kernel/lapic.d kernel/main.d kernel/mp.d kernel/picirq.d kernel/pipe.d kernel/proc.d kernel/spinlock.d kernel/string.d kernel/swtch.d kernel/syscall.d kernel/sysfile.d kernel/sysproc.d kernel/timer.d kernel/trapasm.d kernel/trap.d kernel/uart.d kernel/vectors.d kernel/vm.d kernel/bootmain.d kernel/bootasm.d kernel/multiboot.d kernel/data.d kernel/bootother.d kernel/initcode.d kernel/vectors.S kernel/bootblock kernel/bootblock.out kernel/bootother.out kernel/initcode.out kernel/kernel bootother initcode xv6.img user/bin user/cat user/echo user/forktest user/grep user/init user/kill user/ln user/ls user/mkdir user/rm user/sh user/stressfs user/tester user/usertests user/wc user/zombie user/pt user/cat.o user/echo.o user/forktest.o user/grep.o user/init.o user/kill.o user/ln.o user/ls.o user/mkdir.o user/rm.o user/sh.o user/stressfs.o user/tester.o user/usertests.o user/wc.o user/zombie.o user/pt.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o user/cat.d user/echo.d user/forktest.d user/grep.d user/init.d user/kill.d user/ln.d user/ls.d user/mkdir.d user/rm.d user/sh.d user/stressfs.d user/tester.d user/usertests.d user/wc.d user/zombie.d user/pt.d user/ulib.d user/usys.d user/printf.d user/umalloc.d user/uthreadlib.d tools/mkfs tools/mkfs.o tools/mkfs.d fs fs.img .gdbinit .bochsrc dist
 Trying to build project using make
 make
@@ -232,15 +238,15 @@ ld  -m    elf_i386 -nostdlib --omagic \
 dd if=/dev/zero of=xv6.img count=10000
 10000+0 records in
 10000+0 records out
-5120000 bytes (5.1 MB) copied, 0.0121509 s, 421 MB/s
+5120000 bytes (5.1 MB) copied, 0.016223 s, 316 MB/s
 dd if=kernel/bootblock of=xv6.img conv=notrunc
 1+0 records in
 1+0 records out
-512 bytes (512 B) copied, 6.6993e-05 s, 7.6 MB/s
+512 bytes (512 B) copied, 6.8721e-05 s, 7.5 MB/s
 dd if=kernel/kernel of=xv6.img seek=1 conv=notrunc
-255+1 records in
-255+1 records out
-131050 bytes (131 kB) copied, 0.000282454 s, 464 MB/s
+257+1 records in
+257+1 records out
+131881 bytes (132 kB) copied, 0.00029447 s, 448 MB/s
 gcc -c  -iquote include -Wall -Werror -ggdb  -o tools/mkfs.o tools/mkfs.c
 gcc  tools/mkfs.o -o tools/mkfs
 mkdir -p fs
@@ -323,7 +329,7 @@ wc
 forktest
 kill
 ls
-balloc: first 529 blocks have been allocated
+balloc: first 532 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/stressfs user/bin/echo user/bin/grep user/bin/tester user/bin/kill user/bin/cat user/bin/mkdir user/bin/init user/bin/rm user/bin/ls user/bin/ln user/bin/usertests user/bin/sh user/bin/wc user/bin/zombie user/bin/pt
 
@@ -366,7 +372,7 @@ wc
 forktest
 kill
 ls
-balloc: first 532 blocks have been allocated
+balloc: first 535 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -385,213 +391,13 @@ cpu0: starting
 init: starting sh
 $ tester
 tester
-global: 5
-TEST PASSED
 
 
-test clone PASSED
+test clone FAILED
 Description: Call clone and spin until child thread has changed global variable.  Verifies that address space is shared.
+ User interrupted test
 
 Finished running test clone
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-**********************************************************************
-Start running test badclone
-Description: When passing a non page-aligned stack to clone, clone should return -1.
-
-Running xv6 user progam /home/sll411/provided-basic-tests/tests/ctests/proj3/badclone.c
-Trying to build project using make
-make
-gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
-		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
-gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
-cp user/bin/tester fs/tester
-./tools/mkfs fs.img fs
-used 29 (bit 1 ninode 26) free 29 total 1024
-README
-echo
-cat
-init
-ln
-zombie
-tester
-sh
-grep
-stressfs
-usertests
-pt
-rm
-mkdir
-wc
-forktest
-kill
-ls
-balloc: first 532 blocks have been allocated
-balloc: write bitmap block at sector 28
-rm user/bin/tester
-make qemu-nox 
-Ctrl+a h for help
-/home/software/qemu/bin/qemu-system-i386  -nographic -hdb fs.img xv6.img -smp 2
-WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
-         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
-         Specify the 'raw' format explicitly to remove the restrictions.
-WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
-         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
-         Specify the 'raw' format explicitly to remove the restrictions.
-xv6...
-lapicinit: 1 0xfee00000
-cpu1: starting
-cpu0: starting
-init: starting sh
-$ tester
-tester
-TEST PASSED
-
-
-test badclone PASSED
-Description: When passing a non page-aligned stack to clone, clone should return -1.
-
-Finished running test badclone
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-**********************************************************************
-Start running test join
-Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
-
-Running xv6 user progam /home/sll411/provided-basic-tests/tests/ctests/proj3/join.c
-Trying to build project using make
-make
-gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
-		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
-gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
-cp user/bin/tester fs/tester
-./tools/mkfs fs.img fs
-used 29 (bit 1 ninode 26) free 29 total 1024
-README
-echo
-cat
-init
-ln
-zombie
-tester
-sh
-grep
-stressfs
-usertests
-pt
-rm
-mkdir
-wc
-forktest
-kill
-ls
-balloc: first 532 blocks have been allocated
-balloc: write bitmap block at sector 28
-rm user/bin/tester
-make qemu-nox 
-Ctrl+a h for help
-/home/software/qemu/bin/qemu-system-i386  -nographic -hdb fs.img xv6.img -smp 2
-WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
-         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
-         Specify the 'raw' format explicitly to remove the restrictions.
-WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
-         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
-         Specify the 'raw' format explicitly to remove the restrictions.
-xv6...
-lapicinit: 1 0xfee00000
-cpu1: starting
-cpu0: starting
-init: starting sh
-$ tester
-tester
-found pid is 4 
-found pid is 5 
-found pid is 6 
-found pid is 7 
-found pid is 8 
-found pid is 9 
-found pid is 10 
-found pid is 11 
-found pid is 12 
-found pid is 13 
-found pid is 14 
-found pid is 15 
-found pid is 16 
-found pid is 17 
-found pid is 18 
-found pid is 19 
-found pid is 20 
-found pid is 21 
-found pid is 22 
-found pid is 23 
-found pid is 24 
-found pid is 25 
-found pid is 26 
-found pid is 27 
-found pid is 28 
-found pid is 29 
-found pid is 30 
-found pid is 31 
-found pid is 32 
-found pid is 33 
-found pid is 34 
-found pid is 35 
-found pid is 36 
-found pid is 37 
-found pid is 38 
-found pid is 39 
-found pid is 40 
-found pid is 41 
-found pid is 42 
-found pid is 43 
-found pid is 44 
-found pid is 45 
-found pid is 46 
-found pid is 47 
-found pid is 48 
-found pid is 49 
-found pid is 50 
-found pid is 51 
-found pid is 52 
-found pid is 53 
-found pid is 54 
-found pid is 55 
-found pid is 56 
-found pid is 57 
-found pid is 58 
-found pid is 59 
-found pid is 60 
-found pid is 61 
-TEST PASSED
-
-
-test join PASSED
-Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
-
-Finished running test join
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-**********************************************************************
-**********************************************************************
-**                            SUMMARY                               **
-**********************************************************************
-**********************************************************************
-
-test build PASSED (5 of 5)
-build xv6 using make
-
-test clone PASSED
-Description: Call clone and spin until child thread has changed global variable.  Verifies that address space is shared.
-
-test badclone PASSED
-Description: When passing a non page-aligned stack to clone, clone should return -1.
-
-test join PASSED
-Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
-
-Passed 4 of 4 tests.
-Overall 4 of 4
-Points 5 of 5
+Skipped 4 tests.
+To keep testing after failing a test, use flag '-c' or '--continue'

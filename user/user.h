@@ -27,8 +27,8 @@ int sleep(int);
 int uptime(void);
 int clone(void(*fcn)(void*), void*, void*);
 int join(int);
-int waitcv(void);
-int signalcv(void);
+int waitcv(cond_t* conditionVariable, lock_t* lock);
+int signalcv(cond_t* conditionVariable);
 // user library functions (ulib.c)
 int stat(char*, struct stat*);
 char* strcpy(char*, char*);

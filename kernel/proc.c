@@ -18,6 +18,7 @@ extern void forkret(void);
 extern void trapret(void);
 
 static void wakeup1(void *chan);
+static void wakeup3(void *chan);
 
 void
 pinit(void)
@@ -181,8 +182,10 @@ exit(void)
 
   if (proc->isChild == 0){  // Found a main thread   > kill children 
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if (p->parent == proc){
+      if (p->parent == proc && p->isChild == 1){
         p->state = ZOMBIE;
+        int child_pid = join(p->pid);
+        kill(child_pid);
       }
     }
   }
@@ -581,12 +584,63 @@ acquire(&ptable.lock);
   }
 }
 
-void waitcv(void){
+// Atomically release lock and sleep on chan.
+// Reacquires lock when awakened.
+void
+sleep2(void *chan, lock_t *lock)
+{
+  if(proc == 0)
+    panic("sleep");
 
+  // I QUESTION THIS????
+  // ASSUMES MUTEX IS LOCKED BEFORE BEING CALLED
+  if(lock->islocked == 0)
+    panic("sleep without lock");
+
+  // WAIT MUST RELEASE MUTEX AND PUT THE THREAD TO SLEEP
+  xchg(&(lock->islocked), 0);
+
+  acquire(&ptable.lock);
+
+  // Go to sleep.
+  proc->chan = chan;
+  proc->state = SLEEPING;
+  sched();
+
+  // Tidy up.
+  proc->chan = 0;
+
+  release(&ptable.lock);
 }
 
-void signalcv(void){
+// Wakes up a single processes sleeping on chan.
+// The ptable lock must be held.
+static void
+wakeup3(void *chan)
+{
+  struct proc *p;
 
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+    if(p->state == SLEEPING && p->chan == chan){
+      // mark process as eligible to run
+      p->state = RUNNABLE;
+      break;
+    }
 }
 
+// pthread_cond_wait
+void waitcv(cond_t* conditionVariable, lock_t* lock){
+  // should the ptable be locked or not. In exit where is it unlocked?????
+  //acquire(&ptable.lock);
+  sleep2(&conditionVariable->chan, lock);
+  //release(&ptable.lock);
+}
+
+//pthread_cond_signal
+// "When signaled, the thread awakens and reacquires the lock." <-- what does that mean???
+void signalcv(cond_t* conditionVariable){
+  acquire(&ptable.lock);
+  wakeup3(&conditionVariable->chan);
+  release(&ptable.lock);
+}
 
