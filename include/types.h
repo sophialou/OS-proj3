@@ -18,7 +18,7 @@ typedef struct __lock_t{
 }lock_t;
 
 typedef struct __cond_t{
-	void* chan;
+	uint chan;
 }cond_t;
 
 #ifndef NULL
