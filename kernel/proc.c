@@ -593,8 +593,9 @@ sleep2(void *chan, lock_t *lock)
 
   // I QUESTION THIS????
   // ASSUMES MUTEX IS LOCKED BEFORE BEING CALLED
-  if(lock->islocked == 0)
-    panic("sleep without lock");
+   if(lock->islocked == 0)
+      cprintf("SLeep without lock");
+  //   panic("sleep without lock");
 
   // WAIT MUST RELEASE MUTEX AND PUT THE THREAD TO SLEEP
   xchg(&(lock->islocked), 0);

@@ -5,12 +5,100 @@ build xv6 using make
 
 Trying to clean project using make clean
 make clean
+gcc  -iquote include -Wall -Werror -ggdb  \
+	  -M -MG tools/mkfs.c -MF tools/mkfs.d -MT tools/mkfs.d -MT tools/mkfs.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG user/uthreadlib.c -MF user/uthreadlib.d -MT user/uthreadlib.d -MT user/uthreadlib.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/umalloc.c -MF user/umalloc.d -MT user/umalloc.d -MT user/umalloc.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/printf.c -MF user/printf.d -MT user/printf.d -MT user/printf.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/ulib.c -MF user/ulib.d -MT user/ulib.d -MT user/ulib.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/pt.c -MF user/pt.d -MT user/pt.d -MT user/pt.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/zombie.c -MF user/zombie.d -MT user/zombie.d -MT user/zombie.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/wc.c -MF user/wc.d -MT user/wc.d -MT user/wc.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/usertests.c -MF user/usertests.d -MT user/usertests.d -MT user/usertests.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/stressfs.c -MF user/stressfs.d -MT user/stressfs.d -MT user/stressfs.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/sh.c -MF user/sh.d -MT user/sh.d -MT user/sh.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/rm.c -MF user/rm.d -MT user/rm.d -MT user/rm.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/mkdir.c -MF user/mkdir.d -MT user/mkdir.d -MT user/mkdir.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/ls.c -MF user/ls.d -MT user/ls.d -MT user/ls.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/ln.c -MF user/ln.d -MT user/ln.d -MT user/ln.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/kill.c -MF user/kill.d -MT user/kill.d -MT user/kill.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/init.c -MF user/init.d -MT user/init.d -MT user/init.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/grep.c -MF user/grep.d -MT user/grep.d -MT user/grep.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/forktest.c -MF user/forktest.d -MT user/forktest.d -MT user/forktest.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/echo.c -MF user/echo.d -MT user/echo.d -MT user/echo.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/cat.c -MF user/cat.d -MT user/cat.d -MT user/cat.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/bootmain.c -MF kernel/bootmain.d -MT kernel/bootmain.d -MT kernel/bootmain.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/vm.c -MF kernel/vm.d -MT kernel/vm.d -MT kernel/vm.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/uart.c -MF kernel/uart.d -MT kernel/uart.d -MT kernel/uart.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/trap.c -MF kernel/trap.d -MT kernel/trap.d -MT kernel/trap.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/timer.c -MF kernel/timer.d -MT kernel/timer.d -MT kernel/timer.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG kernel/sysproc.c -MF kernel/sysproc.d -MT kernel/sysproc.d -MT kernel/sysproc.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/sysfile.c -MF kernel/sysfile.d -MT kernel/sysfile.d -MT kernel/sysfile.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/syscall.c -MF kernel/syscall.d -MT kernel/syscall.d -MT kernel/syscall.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/string.c -MF kernel/string.d -MT kernel/string.d -MT kernel/string.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/spinlock.c -MF kernel/spinlock.d -MT kernel/spinlock.d -MT kernel/spinlock.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG kernel/proc.c -MF kernel/proc.d -MT kernel/proc.d -MT kernel/proc.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/pipe.c -MF kernel/pipe.d -MT kernel/pipe.d -MT kernel/pipe.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/picirq.c -MF kernel/picirq.d -MT kernel/picirq.d -MT kernel/picirq.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/mp.c -MF kernel/mp.d -MT kernel/mp.d -MT kernel/mp.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/main.c -MF kernel/main.d -MT kernel/main.d -MT kernel/main.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/lapic.c -MF kernel/lapic.d -MT kernel/lapic.d -MT kernel/lapic.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/kbd.c -MF kernel/kbd.d -MT kernel/kbd.d -MT kernel/kbd.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/kalloc.c -MF kernel/kalloc.d -MT kernel/kalloc.d -MT kernel/kalloc.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/ioapic.c -MF kernel/ioapic.d -MT kernel/ioapic.d -MT kernel/ioapic.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/ide.c -MF kernel/ide.d -MT kernel/ide.d -MT kernel/ide.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/fs.c -MF kernel/fs.d -MT kernel/fs.d -MT kernel/fs.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/file.c -MF kernel/file.d -MT kernel/file.d -MT kernel/file.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/exec.c -MF kernel/exec.d -MT kernel/exec.d -MT kernel/exec.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/console.c -MF kernel/console.d -MT kernel/console.d -MT kernel/console.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/bio.c -MF kernel/bio.d -MT kernel/bio.d -MT kernel/bio.o
 rm -rf kernel/bio.o kernel/console.o kernel/exec.o kernel/file.o kernel/fs.o kernel/ide.o kernel/ioapic.o kernel/kalloc.o kernel/kbd.o kernel/lapic.o kernel/main.o kernel/mp.o kernel/picirq.o kernel/pipe.o kernel/proc.o kernel/spinlock.o kernel/string.o kernel/swtch.o kernel/syscall.o kernel/sysfile.o kernel/sysproc.o kernel/timer.o kernel/trapasm.o kernel/trap.o kernel/uart.o kernel/vectors.o kernel/vm.o kernel/bootmain.o kernel/bootasm.o kernel/multiboot.o kernel/data.o kernel/bootother.o kernel/initcode.o kernel/bio.d kernel/console.d kernel/exec.d kernel/file.d kernel/fs.d kernel/ide.d kernel/ioapic.d kernel/kalloc.d kernel/kbd.d kernel/lapic.d kernel/main.d kernel/mp.d kernel/picirq.d kernel/pipe.d kernel/proc.d kernel/spinlock.d kernel/string.d kernel/swtch.d kernel/syscall.d kernel/sysfile.d kernel/sysproc.d kernel/timer.d kernel/trapasm.d kernel/trap.d kernel/uart.d kernel/vectors.d kernel/vm.d kernel/bootmain.d kernel/bootasm.d kernel/multiboot.d kernel/data.d kernel/bootother.d kernel/initcode.d kernel/vectors.S kernel/bootblock kernel/bootblock.out kernel/bootother.out kernel/initcode.out kernel/kernel bootother initcode xv6.img user/bin user/cat user/echo user/forktest user/grep user/init user/kill user/ln user/ls user/mkdir user/rm user/sh user/stressfs user/tester user/usertests user/wc user/zombie user/pt user/cat.o user/echo.o user/forktest.o user/grep.o user/init.o user/kill.o user/ln.o user/ls.o user/mkdir.o user/rm.o user/sh.o user/stressfs.o user/tester.o user/usertests.o user/wc.o user/zombie.o user/pt.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o user/cat.d user/echo.d user/forktest.d user/grep.d user/init.d user/kill.d user/ln.d user/ls.d user/mkdir.d user/rm.d user/sh.d user/stressfs.d user/tester.d user/usertests.d user/wc.d user/zombie.d user/pt.d user/ulib.d user/usys.d user/printf.d user/umalloc.d user/uthreadlib.d tools/mkfs tools/mkfs.o tools/mkfs.d fs fs.img .gdbinit .bochsrc dist
 Trying to build project using make
 make
@@ -238,15 +326,15 @@ ld  -m    elf_i386 -nostdlib --omagic \
 dd if=/dev/zero of=xv6.img count=10000
 10000+0 records in
 10000+0 records out
-5120000 bytes (5.1 MB) copied, 0.016223 s, 316 MB/s
+5120000 bytes (5.1 MB) copied, 0.0124 s, 413 MB/s
 dd if=kernel/bootblock of=xv6.img conv=notrunc
 1+0 records in
 1+0 records out
-512 bytes (512 B) copied, 6.8721e-05 s, 7.5 MB/s
+512 bytes (512 B) copied, 6.7092e-05 s, 7.6 MB/s
 dd if=kernel/kernel of=xv6.img seek=1 conv=notrunc
 257+1 records in
 257+1 records out
-131881 bytes (132 kB) copied, 0.00029447 s, 448 MB/s
+131833 bytes (132 kB) copied, 0.000284163 s, 464 MB/s
 gcc -c  -iquote include -Wall -Werror -ggdb  -o tools/mkfs.o tools/mkfs.c
 gcc  tools/mkfs.o -o tools/mkfs
 mkdir -p fs
@@ -391,13 +479,345 @@ cpu0: starting
 init: starting sh
 $ tester
 tester
+global: 5
+TEST PASSED
 
 
-test clone FAILED
+test clone PASSED
 Description: Call clone and spin until child thread has changed global variable.  Verifies that address space is shared.
- User interrupted test
 
 Finished running test clone
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Skipped 4 tests.
-To keep testing after failing a test, use flag '-c' or '--continue'
+
+**********************************************************************
+Start running test badclone
+Description: When passing a non page-aligned stack to clone, clone should return -1.
+
+Running xv6 user progam /home/sll411/provided-basic-tests/tests/ctests/proj3/badclone.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+echo
+cat
+init
+ln
+zombie
+tester
+sh
+grep
+stressfs
+usertests
+pt
+rm
+mkdir
+wc
+forktest
+kill
+ls
+balloc: first 535 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386  -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+TEST PASSED
+
+
+test badclone PASSED
+Description: When passing a non page-aligned stack to clone, clone should return -1.
+
+Finished running test badclone
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test join
+Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
+
+Running xv6 user progam /home/sll411/provided-basic-tests/tests/ctests/proj3/join.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+echo
+cat
+init
+ln
+zombie
+tester
+sh
+grep
+stressfs
+usertests
+pt
+rm
+mkdir
+wc
+forktest
+kill
+ls
+balloc: first 536 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386  -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+FFFFFFFF
+TEST PASSED
+
+
+test join PASSED
+Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
+
+Finished running test join
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test durable
+Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
+
+Running xv6 user progam /home/sll411/provided-basic-tests/tests/ctests/proj3/durable.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+echo
+cat
+init
+ln
+zombie
+tester
+sh
+grep
+stressfs
+usertests
+pt
+rm
+mkdir
+wc
+forktest
+kill
+ls
+balloc: first 535 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386  -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+TEST PASSED
+
+
+test durable PASSED
+Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
+
+Finished running test durable
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test sbrk
+Description: Simulate race condition by calling sbrk multiple times > check locks
+
+Running xv6 user progam /home/sll411/provided-basic-tests/tests/ctests/proj3/sbrk.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+echo
+cat
+init
+ln
+zombie
+tester
+sh
+grep
+stressfs
+usertests
+pt
+rm
+mkdir
+wc
+forktest
+kill
+ls
+balloc: first 536 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386  -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+TEST PASSED
+
+
+test sbrk PASSED
+Description: Simulate race condition by calling sbrk multiple times > check locks
+
+Finished running test sbrk
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test killchildren
+Description: Makes sure exit on main thread kills children
+
+Running xv6 user progam /home/sll411/provided-basic-tests/tests/ctests/proj3/killchildren.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+echo
+cat
+init
+ln
+zombie
+tester
+sh
+grep
+stressfs
+usertests
+pt
+rm
+mkdir
+wc
+forktest
+kill
+ls
+balloc: first 536 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386  -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+TEST PASSED
+
+
+test killchildren PASSED
+Description: Makes sure exit on main thread kills children
+
+Finished running test killchildren
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+**********************************************************************
+**********************************************************************
+**                            SUMMARY                               **
+**********************************************************************
+**********************************************************************
+
+test build PASSED (5 of 5)
+build xv6 using make
+
+test clone PASSED
+Description: Call clone and spin until child thread has changed global variable.  Verifies that address space is shared.
+
+test badclone PASSED
+Description: When passing a non page-aligned stack to clone, clone should return -1.
+
+test join PASSED
+Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
+
+test durable PASSED
+Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
+
+test sbrk PASSED
+Description: Simulate race condition by calling sbrk multiple times > check locks
+
+test killchildren PASSED
+Description: Makes sure exit on main thread kills children
+
+Passed 7 of 7 tests.
+Overall 7 of 7
+Points 5 of 5
