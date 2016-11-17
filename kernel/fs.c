@@ -346,6 +346,19 @@ bmap(struct inode *ip, uint bn)
   panic("bmap: out of range");
 }
 
+// Return the disk block address of the tag block 
+// If there is no such block, tmap allocates one.
+static uint
+tmap(struct inode *ip)
+{
+  uint addr;
+ 
+  if ((addr = ip->tags) == 0){
+    ip->tags = addr = balloc(ip->dev);
+  }
+  return addr;
+}
+
 // Truncate inode (discard contents).
 // Only called after the last dirent referring
 // to this inode has been erased on disk.
@@ -429,6 +442,42 @@ writei(struct inode *ip, char *src, uint off, uint n)
       return -1;
     return devsw[ip->major].write(ip, src, n);
   }
+
+  if(off > ip->size || off + n < off)
+    return -1;
+  if(off + n > MAXFILE*BSIZE)
+    n = MAXFILE*BSIZE - off;
+
+  for(tot=0; tot<n; tot+=m, off+=m, src+=m){
+    bp = bread(ip->dev, bmap(ip, off/BSIZE));
+    m = min(n - tot, BSIZE - off%BSIZE);
+    memmove(bp->data + off%BSIZE, src, m);
+    bwrite(bp);
+    brelse(bp);
+  }
+
+  if(n > 0 && off > ip->size){
+    ip->size = off;
+    iupdate(ip);
+  }
+  return n;
+}
+// writei(f->ip, key, value, valueLength)
+int
+writetag(struct inode *ip, char *key, char *value, uint n)
+{
+  uint tot, m;
+  struct buf *bp;
+
+
+    // for(i=0; i<16; i++) {
+  //   if(tagArray[i].isUsed == 0) {
+  //     freeTags++;
+  //   }
+  // }
+  // if (freeTags == 0) {
+  //   return -1;
+  // }
 
   if(off > ip->size || off + n < off)
     return -1;

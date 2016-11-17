@@ -128,16 +128,15 @@ int
 tagFile(int fileDescriptor, struct file* f, char* key, char* value, int valueLength){
   int i;
   int freeTags = 0;
-  struct Tag *tagArray = (struct Tag *) f->ip->tags;
-  for(i=0; i<16; i++) {
-    if(tagArray[i].isUsed == 0) {
-      freeTags++;
-    }
-  }
-  if (freeTags == 0) {
+  struct Tag *tagArray = f->ip->tags;
+
+  ilock(f->ip);
+  if (writei(f->ip, key, value, valueLength) < 0){
+    iunlock(f->ip);
     return -1;
   }
-  return 0;
+  iunlock(f->ip);
+  return 1;
 }
 
 int 
