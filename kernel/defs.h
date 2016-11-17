@@ -33,6 +33,9 @@ void            fileinit(void);
 int             fileread(struct file*, char*, int n);
 int             filestat(struct file*, struct stat*);
 int             filewrite(struct file*, char*, int n);
+int             tagFile(int, struct file*, char*, char*, int);
+int 			removeFileTag(int, char*);
+int 			getFileTag(int, char*, char*, int);
 
 // fs.c
 int             dirlink(struct inode*, char*, uint);

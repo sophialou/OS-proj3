@@ -97,7 +97,7 @@ fileread(struct file *f, char *addr, int n)
   if(f->type == FD_INODE){
     ilock(f->ip);
     if((r = readi(f->ip, addr, f->off, n)) > 0)
-      f->off += r;
+      f->off += r;    
     iunlock(f->ip);
     return r;
   }
@@ -122,5 +122,31 @@ filewrite(struct file *f, char *addr, int n)
     return r;
   }
   panic("filewrite");
+}
+
+int
+tagFile(int fileDescriptor, struct file* f, char* key, char* value, int valueLength){
+  int i;
+  int freeTags = 0;
+  struct Tag *tagArray = (struct Tag *) f->ip->tags;
+  for(i=0; i<16; i++) {
+    if(tagArray[i].isUsed == 0) {
+      freeTags++;
+    }
+  }
+  if (freeTags == 0) {
+    return -1;
+  }
+  return 0;
+}
+
+int 
+removeFileTag(int fileDescriptor, char* key){
+  return 0;
+}
+
+int 
+getFileTag(int fileDescriptor, char* key, char* buffer, int length){
+  return 0;
 }
 
