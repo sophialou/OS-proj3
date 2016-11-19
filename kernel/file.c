@@ -126,15 +126,12 @@ filewrite(struct file *f, char *addr, int n)
 
 int
 tagFile(int fileDescriptor, struct file* f, char* key, char* value, int valueLength){
-  int i;
-  int freeTags = 0;
-  struct Tag *tagArray = f->ip->tags;
-
   ilock(f->ip);
-  if (writei(f->ip, key, value, valueLength) < 0){
+  if (writetag(f->ip, key, value, valueLength) < 0){
     iunlock(f->ip);
     return -1;
   }
+  iupdate(f->ip);
   iunlock(f->ip);
   return 1;
 }
@@ -145,7 +142,14 @@ removeFileTag(int fileDescriptor, char* key){
 }
 
 int 
-getFileTag(int fileDescriptor, char* key, char* buffer, int length){
-  return 0;
+getFileTag(int fileDescriptor, struct file* f, char* key, char* buffer, int length){
+  int valueLength;
+  ilock(f->ip);
+  if ((valueLength = readtag(f->ip, key, buffer, length)) < 0){
+    iunlock(f->ip);
+    return -1;
+  }
+  iunlock(f->ip);
+  return valueLength;
 }
 

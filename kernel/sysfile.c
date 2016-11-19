@@ -436,10 +436,14 @@ sys_getFileTag(void){
   int length;
   struct file *f;
 
-  if ((argfd(0, &fileDescriptor,&f) < 0) || (argptr(1, (void*)&key,sizeof(void*)) < 0) || (argptr(2, (void*)&buffer,sizeof(void*)) < 0) || (argint(3, &length) <0))
+  if ((argfd(0, &fileDescriptor,&f) < 0) || (argptr(1, (void*)&key,sizeof(void*)) < 0) || (argptr(2, (void*)&buffer,sizeof(void*)) < 0) || (argint(3, &length) <0)){
+    cprintf("here");
     return -1;
+  }
 
-  if(f->writable == 0)
+  if(f->writable == 0){
+    cprintf("writable");
     return -1;
-  return getFileTag(fileDescriptor, key, buffer, length);
+  }
+  return getFileTag(fileDescriptor,f, key, buffer, length);
 }

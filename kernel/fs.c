@@ -352,9 +352,21 @@ static uint
 tmap(struct inode *ip)
 {
   uint addr;
+  int i;
+  struct buf *bp;
  
   if ((addr = ip->tags) == 0){
     ip->tags = addr = balloc(ip->dev);
+    bp = bread(ip->dev,addr);
+
+    struct Tag newtag = {.key = {0} , .value = {0} , .isUsed = 0};
+
+    for(i=0;i<16;i++){
+      memmove(bp->data + (i*32), &newtag, 32);
+    }
+
+    bwrite(bp);
+    brelse(bp);
   }
   return addr;
 }
@@ -462,41 +474,109 @@ writei(struct inode *ip, char *src, uint off, uint n)
   }
   return n;
 }
+
+
+void
+writeStructTagToBlock(struct Tag *tag_ptr, struct buf *bp, int i){
+  memmove(bp->data + (i * 32),tag_ptr,32);
+}
+
+
+void
+readTagFromBlock(struct Tag *tag_ptr, struct buf *bp, int i){
+  memmove(tag_ptr, bp->data + (i * 32),32);
+}
+
+int
+readtag(struct inode *ip, char *key, char *buffer, uint n){
+
+  struct buf *bp;
+  struct Tag tag_ptr;
+  int i;
+  int j;
+  char fullval[18];
+
+  // retrieve memory block of tags 
+  bp = bread(ip->dev,tmap(ip));
+
+  for(i=0;i < 16;i++){
+    readTagFromBlock(&tag_ptr, bp,i);
+
+    if ((tag_ptr.isUsed == 1) && (strncmp(tag_ptr.key, key,strlen(key)) == 0)){
+      //fullval[i] = tag_ptr->value[i];
+      for(j=0; j<18; j++) {
+        fullval[j] = tag_ptr.value[j];
+        // cprintf("%s \n",fullval[j]);
+        if(fullval[j] == '\0') {
+          break;
+        }
+      }
+
+      if (j <= n){ // it can fit into the buffer
+        safestrcpy(buffer,fullval,j);
+      }
+      brelse(bp);
+      return j;
+    }
+  }
+
+  return -1;
+
+}
+
+
 // writei(f->ip, key, value, valueLength)
+
+// struct Tag {
+//  char key[10];    // at most 10 bytes for key, including NULL
+//  char value[18];  // at most 18 bytes for value, including NULL
+//  int isUsed;               // 4 bytes available for bookkeeping, etc, if needed
+// };
 int
 writetag(struct inode *ip, char *key, char *value, uint n)
 {
-  uint tot, m;
   struct buf *bp;
 
+  // retrieve memory block of tags 
+  bp = bread(ip->dev,tmap(ip));
 
-    // for(i=0; i<16; i++) {
-  //   if(tagArray[i].isUsed == 0) {
-  //     freeTags++;
-  //   }
-  // }
-  // if (freeTags == 0) {
-  //   return -1;
-  // }
+  struct Tag newtag;
 
-  if(off > ip->size || off + n < off)
-    return -1;
-  if(off + n > MAXFILE*BSIZE)
-    n = MAXFILE*BSIZE - off;
+  strncpy(newtag.key, key, strlen(key));
+  safestrcpy(newtag.value, value, n+1);
+  newtag.isUsed = 1;
 
-  for(tot=0; tot<n; tot+=m, off+=m, src+=m){
-    bp = bread(ip->dev, bmap(ip, off/BSIZE));
-    m = min(n - tot, BSIZE - off%BSIZE);
-    memmove(bp->data + off%BSIZE, src, m);
-    bwrite(bp);
-    brelse(bp);
+  struct Tag tag_ptr;
+  int i;
+  int keyPresent = 0;
+
+  // If key exists, update the tag 
+  for(i=0;i < 16;i++){
+    readTagFromBlock(&tag_ptr, bp,i);
+
+    if (tag_ptr.isUsed == 1 && strncmp(tag_ptr.key, key,strlen(key)) == 0){
+      writeStructTagToBlock(&newtag,bp,i);
+      keyPresent = 1;
+      bwrite(bp);
+      brelse(bp);
+      return 1;
+    }
   }
 
-  if(n > 0 && off > ip->size){
-    ip->size = off;
-    iupdate(ip);
+ // Create new tag 
+  if (keyPresent == 0){
+    for(i=0;i < 16;i++){
+    readTagFromBlock(&tag_ptr, bp,i);
+
+    if (tag_ptr.isUsed == 0){
+      writeStructTagToBlock(&newtag,bp,i);
+      bwrite(bp);
+      brelse(bp);
+      return 1;
+    }
   }
-  return n;
+  }
+  return -1;
 }
 
 // Directories

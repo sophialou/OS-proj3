@@ -35,7 +35,7 @@ int             filestat(struct file*, struct stat*);
 int             filewrite(struct file*, char*, int n);
 int             tagFile(int, struct file*, char*, char*, int);
 int 			removeFileTag(int, char*);
-int 			getFileTag(int, char*, char*, int);
+int 			getFileTag(int, struct file*, char*, char*, int);
 
 // fs.c
 int             dirlink(struct inode*, char*, uint);
@@ -55,6 +55,7 @@ int             readi(struct inode*, char*, uint, uint);
 void            stati(struct inode*, struct stat*);
 int             writei(struct inode*, char*, uint, uint);
 int 			writetag(struct inode*, char*, char*, uint);
+int             readtag(struct inode*, char*, char*, uint);
 
 // ide.c
 void            ideinit(void);
