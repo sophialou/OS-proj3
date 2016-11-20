@@ -513,7 +513,7 @@ readtag(struct inode *ip, char *key, char *buffer, uint n){
       }
 
       if (j <= n){ // it can fit into the buffer
-        safestrcpy(buffer,fullval,j);
+        safestrcpy(buffer,fullval,j+1);
       }
       brelse(bp);
       return j;
