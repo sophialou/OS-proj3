@@ -34,7 +34,7 @@ int             fileread(struct file*, char*, int n);
 int             filestat(struct file*, struct stat*);
 int             filewrite(struct file*, char*, int n);
 int             tagFile(int, struct file*, char*, char*, int);
-int 			removeFileTag(int, char*);
+int 			removeFileTag(int, struct file*, char*);
 int 			getFileTag(int, struct file*, char*, char*, int);
 
 // fs.c
@@ -56,6 +56,7 @@ void            stati(struct inode*, struct stat*);
 int             writei(struct inode*, char*, uint, uint);
 int 			writetag(struct inode*, char*, char*, uint);
 int             readtag(struct inode*, char*, char*, uint);
+int 			removetag(struct inode*, char*);
 
 // ide.c
 void            ideinit(void);

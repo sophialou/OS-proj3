@@ -137,8 +137,15 @@ tagFile(int fileDescriptor, struct file* f, char* key, char* value, int valueLen
 }
 
 int 
-removeFileTag(int fileDescriptor, char* key){
-  return 0;
+removeFileTag(int fileDescriptor, struct file* f,char* key){
+  ilock(f->ip);
+  if (removetag(f->ip, key) < 0){
+    iunlock(f->ip);
+    return -1;
+  }
+  iupdate(f->ip);
+  iunlock(f->ip);
+  return 1;
 }
 
 int 

@@ -425,7 +425,7 @@ sys_removeFileTag(void){
   if(f->writable == 0)
     return -1;
 
-  return removeFileTag(fileDescriptor, key);
+  return removeFileTag(fileDescriptor, f, key);
 }
 
 int 

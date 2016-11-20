@@ -181,6 +181,7 @@ iupdate(struct inode *ip)
   dip->minor = ip->minor;
   dip->nlink = ip->nlink;
   dip->size = ip->size;
+  dip->tags = ip->tags;
   memmove(dip->addrs, ip->addrs, sizeof(ip->addrs));
   bwrite(bp);
   brelse(bp);
@@ -356,6 +357,7 @@ tmap(struct inode *ip)
   struct buf *bp;
  
   if ((addr = ip->tags) == 0){
+    cprintf("new tag block allocated \n");
     ip->tags = addr = balloc(ip->dev);
     bp = bread(ip->dev,addr);
 
@@ -485,6 +487,31 @@ writeStructTagToBlock(struct Tag *tag_ptr, struct buf *bp, int i){
 void
 readTagFromBlock(struct Tag *tag_ptr, struct buf *bp, int i){
   memmove(tag_ptr, bp->data + (i * 32),32);
+}
+
+int 
+removetag(struct inode *ip, char *key){
+   struct buf *bp;
+   int i;
+   struct Tag tag_ptr;
+
+   // retrieve memory block of tags 
+  bp = bread(ip->dev,tmap(ip));
+
+  // If key exists, remove tag
+  for(i=0;i < 16;i++){
+    readTagFromBlock(&tag_ptr, bp,i);
+
+    if (tag_ptr.isUsed == 1 && strncmp(tag_ptr.key, key,strlen(key)) == 0){
+      struct Tag newtag = {.key = {0} , .value = {0} , .isUsed = 0};
+      writeStructTagToBlock(&newtag,bp,i);
+      bwrite(bp);
+      brelse(bp);
+      return 1;
+    }
+  }
+
+  return -1;
 }
 
 int
