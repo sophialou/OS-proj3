@@ -35,7 +35,7 @@ int             filestat(struct file*, struct stat*);
 int             filewrite(struct file*, char*, int n);
 int             tagFile(int, struct file*, char*, char*, int);
 int 			removeFileTag(int, struct file*, char*);
-int 			getFileTag(int, struct file*, char*, char*, int);
+int 			getFileTag(struct file*, char*, char*, int);
 
 // fs.c
 int             dirlink(struct inode*, char*, uint);

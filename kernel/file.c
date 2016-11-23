@@ -149,7 +149,7 @@ removeFileTag(int fileDescriptor, struct file* f,char* key){
 }
 
 int 
-getFileTag(int fileDescriptor, struct file* f, char* key, char* buffer, int length){
+getFileTag(struct file* f, char* key, char* buffer, int length){
   int valueLength;
   ilock(f->ip);
   if ((valueLength = readtag(f->ip, key, buffer, length)) < 0){

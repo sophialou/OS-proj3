@@ -443,5 +443,5 @@ sys_getFileTag(void){
   if(f->writable == 0){
     return -1;
   }
-  return getFileTag(fileDescriptor,f, key, buffer, length);
+  return getFileTag(f, key, buffer, length);
 }
