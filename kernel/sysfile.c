@@ -405,8 +405,6 @@ sys_tagFile(void){
   if(f->writable == 0)
     return -1;
 
-  cprintf("length hi %d \n",strlen(key));
-
   if (strlen(key) < 1 || strlen(key) > 9)
     return -1;
 
@@ -444,4 +442,20 @@ sys_getFileTag(void){
     return -1;
   }
   return getFileTag(f, key, buffer, length);
+}
+
+int 
+sys_getAllTags(void){
+  int fileDescriptor; 
+  struct Key *keys;
+  int maxTags;
+  struct file *f;
+
+  if ((argfd(0, &fileDescriptor,&f) < 0) || (argint(2, &maxTags) <0))
+    return -1;
+
+  if (argptr(1, (void*)&keys, maxTags * sizeof(struct Key)) < 0)
+    return -1;
+
+  return getAllTags(f, keys, maxTags);
 }

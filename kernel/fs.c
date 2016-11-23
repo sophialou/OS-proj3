@@ -552,8 +552,39 @@ readtag(struct inode *ip, char *key, char *buffer, uint n){
   }
 
   return -1;
-
 }
+
+// struct Key {
+//   char key[10];  // at most 10 bytes for key
+// };
+int 
+retrieveAllTags(struct inode *ip, struct Key* keys, int maxTags){
+  struct buf *bp;
+  int count = 0;
+  int i;
+  struct Tag tag_ptr;
+
+  // retrieve memory block of tags 
+  bp = bread(ip->dev,tmap(ip));
+
+  for(i=0;i < 16;i++){
+    readTagFromBlock(&tag_ptr, bp,i);
+
+    if ((tag_ptr.isUsed == 1)){
+      struct Key newkey = {.key = {0}};
+      safestrcpy(newkey.key, tag_ptr.key, strlen(tag_ptr.key)+1);
+
+      if(count < maxTags) {
+        keys[count] = newkey;
+      }
+
+      count += 1;
+
+      }
+    }
+     brelse(bp);
+    return count;
+  }
 
 
 // writei(f->ip, key, value, valueLength)

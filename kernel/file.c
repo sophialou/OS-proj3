@@ -160,3 +160,16 @@ getFileTag(struct file* f, char* key, char* buffer, int length){
   return valueLength;
 }
 
+int       
+getAllTags(struct file* f, struct Key* keys, int maxTags){
+  int numTags;
+   ilock(f->ip);
+   if ((numTags = retrieveAllTags(f->ip, keys, maxTags)) < 0){
+    iunlock(f->ip);
+    return -1;
+  }
+  iunlock(f->ip);
+  return numTags;
+}
+
+

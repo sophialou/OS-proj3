@@ -34,6 +34,10 @@ struct Tag {
  int isUsed;               // 4 bytes available for bookkeeping, etc, if needed
 };
 
+struct Key {
+  char key[10];  // at most 10 bytes for key
+};
+
 #define I_BUSY 0x1
 #define I_VALID 0x2
 

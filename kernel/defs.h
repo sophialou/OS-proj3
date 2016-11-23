@@ -9,6 +9,7 @@ struct pipe;
 struct proc;
 struct spinlock;
 struct stat;
+struct Key;
 
 // bio.c
 void            binit(void);
@@ -36,6 +37,7 @@ int             filewrite(struct file*, char*, int n);
 int             tagFile(int, struct file*, char*, char*, int);
 int 			removeFileTag(int, struct file*, char*);
 int 			getFileTag(struct file*, char*, char*, int);
+int 			getAllTags(struct file*, struct Key*, int);
 
 // fs.c
 int             dirlink(struct inode*, char*, uint);
@@ -57,6 +59,7 @@ int             writei(struct inode*, char*, uint, uint);
 int 			writetag(struct inode*, char*, char*, uint);
 int             readtag(struct inode*, char*, char*, uint);
 int 			removetag(struct inode*, char*);
+int 			retrieveAllTags(struct inode*, struct Key*, int);
 
 // ide.c
 void            ideinit(void);
