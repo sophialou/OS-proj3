@@ -390,3 +390,58 @@ sys_pipe(void)
   fd[1] = fd1;
   return 0;
 }
+
+int 
+sys_tagFile(void){
+  int fileDescriptor;
+  char* key;
+  char* value;
+  int valueLength;
+  struct file *f;
+
+  if ((argfd(0,&fileDescriptor,&f) < 0) || (argptr(1, (void*)&key,sizeof(void*)) < 0) || (argptr(2, (void*)&value,sizeof(void*)) < 0) || (argint(3, &valueLength) <0))
+    return -1;
+
+  if(f->writable == 0)
+    return -1;
+
+  cprintf("length hi %d \n",strlen(key));
+
+  if (strlen(key) < 1 || strlen(key) > 9)
+    return -1;
+
+  return tagFile(fileDescriptor,f, key, value, valueLength);
+}
+
+int
+sys_removeFileTag(void){
+  int fileDescriptor; 
+  char* key;
+  struct file *f;
+
+  if ((argfd(0, &fileDescriptor,&f) < 0) || (argptr(1, (void*)&key,sizeof(void*)) < 0))
+    return -1;
+
+  if(f->writable == 0)
+    return -1;
+
+  return removeFileTag(fileDescriptor, f, key);
+}
+
+int 
+sys_getFileTag(void){
+  int fileDescriptor; 
+  char* key;
+  char* buffer;
+  int length;
+  struct file *f;
+
+  if ((argfd(0, &fileDescriptor,&f) < 0) || (argptr(1, (void*)&key,sizeof(void*)) < 0) || (argptr(2, (void*)&buffer,sizeof(void*)) < 0) || (argint(3, &length) <0)){
+    return -1;
+  }
+
+  if(f->readable == 0){
+    return -1;
+  }
+  return getFileTag(f, key, buffer, length);
+}

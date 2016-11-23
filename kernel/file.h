@@ -24,7 +24,14 @@ struct inode {
   short minor;
   short nlink;
   uint size;
+  uint tags;
   uint addrs[NDIRECT+1];
+};
+
+struct Tag {
+ char key[10];    // at most 10 bytes for key, including NULL
+ char value[18];  // at most 18 bytes for value, including NULL
+ int isUsed;               // 4 bytes available for bookkeeping, etc, if needed
 };
 
 #define I_BUSY 0x1

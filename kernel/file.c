@@ -97,7 +97,7 @@ fileread(struct file *f, char *addr, int n)
   if(f->type == FD_INODE){
     ilock(f->ip);
     if((r = readi(f->ip, addr, f->off, n)) > 0)
-      f->off += r;
+      f->off += r;    
     iunlock(f->ip);
     return r;
   }
@@ -122,5 +122,41 @@ filewrite(struct file *f, char *addr, int n)
     return r;
   }
   panic("filewrite");
+}
+
+int
+tagFile(int fileDescriptor, struct file* f, char* key, char* value, int valueLength){
+  ilock(f->ip);
+  if (writetag(f->ip, key, value, valueLength) < 0){
+    iunlock(f->ip);
+    return -1;
+  }
+  iupdate(f->ip);
+  iunlock(f->ip);
+  return 1;
+}
+
+int 
+removeFileTag(int fileDescriptor, struct file* f,char* key){
+  ilock(f->ip);
+  if (removetag(f->ip, key) < 0){
+    iunlock(f->ip);
+    return -1;
+  }
+  iupdate(f->ip);
+  iunlock(f->ip);
+  return 1;
+}
+
+int 
+getFileTag(struct file* f, char* key, char* buffer, int length){
+  int valueLength;
+  ilock(f->ip);
+  if ((valueLength = readtag(f->ip, key, buffer, length)) < 0){
+    iunlock(f->ip);
+    return -1;
+  }
+  iunlock(f->ip);
+  return valueLength;
 }
 
