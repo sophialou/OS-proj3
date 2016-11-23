@@ -502,7 +502,9 @@ removetag(struct inode *ip, char *key){
   for(i=0;i < 16;i++){
     readTagFromBlock(&tag_ptr, bp,i);
 
-    if (tag_ptr.isUsed == 1 && strncmp(tag_ptr.key, key,strlen(key)) == 0){
+     int strLength = strlen(tag_ptr.key);
+
+    if (tag_ptr.isUsed == 1 && strLength == strlen(key) && strncmp(tag_ptr.key, key,strlen(key)) == 0){
       struct Tag newtag = {.key = {0} , .value = {0} , .isUsed = 0};
       writeStructTagToBlock(&newtag,bp,i);
       bwrite(bp);
@@ -529,7 +531,9 @@ readtag(struct inode *ip, char *key, char *buffer, uint n){
   for(i=0;i < 16;i++){
     readTagFromBlock(&tag_ptr, bp,i);
 
-    if ((tag_ptr.isUsed == 1) && (strncmp(tag_ptr.key, key,strlen(key)) == 0)){
+    int strLength = strlen(tag_ptr.key);
+
+    if ((tag_ptr.isUsed == 1) && strLength == strlen(key) && (strncmp(tag_ptr.key, key,strlen(key)) == 0)){
       //fullval[i] = tag_ptr->value[i];
       for(j=0; j<18; j++) {
         fullval[j] = tag_ptr.value[j];
@@ -569,7 +573,7 @@ writetag(struct inode *ip, char *key, char *value, uint n)
 
   struct Tag newtag;
 
-  strncpy(newtag.key, key, strlen(key));
+  safestrcpy(newtag.key, key, strlen(key)+1);
   safestrcpy(newtag.value, value, n+1);
   newtag.isUsed = 1;
 

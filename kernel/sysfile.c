@@ -405,9 +405,9 @@ sys_tagFile(void){
   if(f->writable == 0)
     return -1;
 
- // cprintf("length %d \n",strlen(key));
+  cprintf("length hi %d \n",strlen(key));
 
-  if (strlen(key) < 2 || strlen(key) > 10)
+  if (strlen(key) < 1 || strlen(key) > 9)
     return -1;
 
   return tagFile(fileDescriptor,f, key, value, valueLength);
@@ -440,7 +440,7 @@ sys_getFileTag(void){
     return -1;
   }
 
-  if(f->writable == 0){
+  if(f->readable == 0){
     return -1;
   }
   return getFileTag(f, key, buffer, length);
